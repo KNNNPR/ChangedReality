@@ -1419,7 +1419,7 @@ Transform:
   m_GameObject: {fileID: 1598019924}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.89, y: -4.03, z: 0}
+  m_LocalPosition: {x: -7.38, y: -4.05, z: 0}
   m_LocalScale: {x: 0.3085979, y: 0.28899997, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1452,6 +1452,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  animator: {fileID: 1598019930}
 --- !u!95 &1598019930
 Animator:
   serializedVersion: 7

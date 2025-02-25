@@ -19,19 +19,25 @@ public class PlayerMovementLogic : MonoBehaviour
     [SerializeField] private Transform groundChecker;
     [SerializeField] private LayerMask groundLayer;
 
+    [SerializeField] private Animator animator;
+
     private float currentSpeed = 0f;
 
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        animator.SetFloat("speed", Mathf.Abs(horizontal));
+
         if (IsGrounded())
         {
             coyoteTimeCounter = coyoteTime;
+            animator.SetBool("isGrounded", true);
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+            animator.SetBool("isGrounded", false);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
