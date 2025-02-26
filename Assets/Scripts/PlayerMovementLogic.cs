@@ -22,6 +22,7 @@ public class PlayerMovementLogic : MonoBehaviour
     [SerializeField] private Animator animator;
 
     private float currentSpeed = 0f;
+    private bool isGravityInverted = false;
 
     void Update()
     {
@@ -39,6 +40,7 @@ public class PlayerMovementLogic : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
             animator.SetBool("isGrounded", false);
         }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpBufferTimeCounter = jumpBufferTime;
@@ -47,15 +49,27 @@ public class PlayerMovementLogic : MonoBehaviour
         {
             jumpBufferTimeCounter -= Time.deltaTime;
         }
+
         if (jumpBufferTimeCounter > 0f && coyoteTimeCounter > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? -jumpPower : jumpPower);
             jumpBufferTimeCounter = 0f;
         }
+
         if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocity.y > 0)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
             coyoteTimeCounter = 0f;
+        }
+
+        // Инверсия гравитации по нажатию E
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            isGravityInverted = !isGravityInverted;
+            rb.gravityScale *= -1f; // Инвертируем гравитацию
+
+            // Переворачиваем персонажа вверх ногами
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * -1, transform.localScale.z);
         }
 
         Flip();
@@ -67,6 +81,7 @@ public class PlayerMovementLogic : MonoBehaviour
             currentSpeed = Mathf.MoveTowards(currentSpeed, horizontal * speed, acceleration * Time.fixedDeltaTime);
         else
             currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * Time.fixedDeltaTime);
+
         rb.linearVelocity = new Vector2(currentSpeed, rb.linearVelocity.y);
     }
 
