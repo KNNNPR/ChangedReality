@@ -1,8 +1,10 @@
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class PlayerMovementLogic : MonoBehaviour
 {
     private float horizontal;
+
     [SerializeField] private float speed = 8f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 10f;
@@ -23,6 +25,8 @@ public class PlayerMovementLogic : MonoBehaviour
 
     private float currentSpeed = 0f;
     private bool isGravityInverted = false;
+
+    private bool gravitySphereCollected = false;
 
     void Update()
     {
@@ -62,13 +66,11 @@ public class PlayerMovementLogic : MonoBehaviour
             coyoteTimeCounter = 0f;
         }
 
-        // Инверсия гравитации по нажатию E
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Q) && gravitySphereCollected)
         {
             isGravityInverted = !isGravityInverted;
-            rb.gravityScale *= -1f; // Инвертируем гравитацию
+            rb.gravityScale *= -1f;
 
-            // Переворачиваем персонажа вверх ногами
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * -1, transform.localScale.z);
         }
 
@@ -99,5 +101,28 @@ public class PlayerMovementLogic : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Gravity_Sphere")
+        {
+            gravitySphereCollected = true;
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.layer == 7)
+        {
+            GameOver();
+        }
+    }
+
+    public void GameOver()
+    {
+        gameObject.SetActive(false);
+
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
 }

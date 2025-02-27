@@ -6,9 +6,15 @@ public class DoorInteraction : MonoBehaviour
     private bool isPlayerNear = false;
     public Transform playerTransform;
     public GameObject interactionPrompt;
+
+    [SerializeField] private Sprite openDoorSprite;
+    [SerializeField] private Sprite closedDoorSprite;
+    private SpriteRenderer spriteRenderer;
+
     void Start()
     {
-        float distance = Vector2.Distance(transform.position, playerTransform.position);
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = closedDoorSprite;
     }
 
     void Update()
@@ -17,18 +23,21 @@ public class DoorInteraction : MonoBehaviour
 
         if (distance <= interactionDistance)
         {
-            isPlayerNear = true;
+            if (!isPlayerNear)
+            {
+                isPlayerNear = true;
+                spriteRenderer.sprite = openDoorSprite;
+            }
             ShowInteractionPrompt(true);
         }
         else
         {
-            isPlayerNear = false;
+            if (isPlayerNear)
+            {
+                isPlayerNear = false;
+                spriteRenderer.sprite = closedDoorSprite;
+            }
             ShowInteractionPrompt(false);
-        }
-
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
-        {
-            InteractWithDoor();
         }
     }
 
@@ -38,10 +47,5 @@ public class DoorInteraction : MonoBehaviour
         {
             interactionPrompt.SetActive(show);
         }
-    }
-
-    private void InteractWithDoor()
-    {
-        Debug.Log("Переход на новый уровень...");
     }
 }
