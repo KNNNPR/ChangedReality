@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DoorInteraction : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class DoorInteraction : MonoBehaviour
                 spriteRenderer.sprite = openDoorSprite;
             }
             ShowInteractionPrompt(true);
+            if (Input.GetKeyDown(KeyCode.E)) SceneManager.LoadScene("Level_2()");
         }
         else
         {
