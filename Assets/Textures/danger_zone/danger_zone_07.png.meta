@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      danger_zone_07_0: -397504290431091905
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

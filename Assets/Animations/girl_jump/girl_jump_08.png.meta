@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      girl_jump_08_0: -1711863752979208049
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

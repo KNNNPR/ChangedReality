@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      girl_interact_33_0: -145100691136001160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
