@@ -25,5 +25,6 @@ public class ChildScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Platform") Destroy(collision.gameObject);
+        if (collision.gameObject.name == "wall_1__00_1") Destroy(collision.gameObject);
     }
 }
