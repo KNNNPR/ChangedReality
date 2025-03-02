@@ -1,10 +1,15 @@
 using UnityEditor.Build.Content;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementLogic : MonoBehaviour
 {
+    [SerializeField] private AudioSource audioSource; // Источник звука
     private float horizontal;
-
+    [SerializeField] private AudioClip walkSound; // Звук шагов
+    [SerializeField] private AudioClip jumpSound; // Звук прыжка
+    [SerializeField] private GameObject pauseMenuUI; // Ссылка на панель паузы
+    private bool isPaused = false;
     [SerializeField] private float speed = 8f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 10f;
@@ -29,7 +34,7 @@ public class PlayerMovementLogic : MonoBehaviour
     [SerializeField]private bool gravitySphereCollected = false;
 
     [SerializeField] private bool isDoppel;
-
+    private bool isWalking = false;
     private void Start()
     {
         if (isDoppel)
@@ -41,24 +46,50 @@ public class PlayerMovementLogic : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) // Нажатие Esc
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+        
         horizontal = Input.GetAxisRaw("Horizontal");
-
+        if (horizontal != 0 && IsGrounded() && !isWalking)
+        {
+            isWalking = true;
+            PlayLoopSound(walkSound); // Запускаем звук шагов
+        }
+        else if (horizontal == 0 || !IsGrounded())
+        {
+            isWalking = false;
+            audioSource.Stop(); // Останавливаем звук шагов
+        }
         animator.SetFloat("speed", Mathf.Abs(horizontal));
 
         if (IsGrounded())
         {
             coyoteTimeCounter = coyoteTime;
             animator.SetBool("isGrounded", true);
+            
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
             animator.SetBool("isGrounded", false);
+            
+         
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpBufferTimeCounter = jumpBufferTime;
+            
+
         }
         else
         {
@@ -74,8 +105,10 @@ public class PlayerMovementLogic : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space) && Mathf.Abs(rb.linearVelocity.y) > 0)//Cheking
         {
+            
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
             coyoteTimeCounter = 0f;
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Q) && gravitySphereCollected)
@@ -88,7 +121,42 @@ public class PlayerMovementLogic : MonoBehaviour
 
         Flip();
     }
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
 
+    private void PlayLoopSound(AudioClip clip)
+    {
+        if (clip != null && !audioSource.isPlaying)
+        {
+            audioSource.clip = clip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
+    public void PauseGame()
+    {
+        pauseMenuUI.SetActive(true); // Показываем меню
+        Time.timeScale = 0f; // Останавливаем игру
+        isPaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenuUI.SetActive(false); // Скрываем меню
+        Time.timeScale = 1f; // Возобновляем игру
+        isPaused = false;
+    }
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f; // Восстанавливаем время перед выходом
+        SceneManager.LoadScene("MainMenu"); // Загрузка главного меню
+    }
     private void FixedUpdate()
     {
         if (horizontal != 0)
@@ -101,6 +169,7 @@ public class PlayerMovementLogic : MonoBehaviour
 
     private bool IsGrounded()
     {
+        
         return Physics2D.OverlapCircle(groundChecker.position, 0.2f, groundLayer);
     }
 
