@@ -10,6 +10,7 @@ public class DoorInteraction : MonoBehaviour
 
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private Sprite closedDoorSprite;
+    [SerializeField] private int SceneNumber;
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -29,8 +30,9 @@ public class DoorInteraction : MonoBehaviour
                 isPlayerNear = true;
                 spriteRenderer.sprite = openDoorSprite;
             }
+
             ShowInteractionPrompt(true);
-            if (Input.GetKeyDown(KeyCode.E)) SceneManager.LoadScene("Level_2()");
+            if (Input.GetKeyDown(KeyCode.E)) SceneManager.LoadScene(SceneNumber);
         }
         else
         {

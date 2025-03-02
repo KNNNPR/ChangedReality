@@ -4,6 +4,9 @@ public class ChildScript : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private float speed;
+    [SerializeField] private LayerMask bLayer;
+    [SerializeField] private LayerMask bLayer1;
+
 
     private Rigidbody2D rb;
 
@@ -22,9 +25,5 @@ public class ChildScript : MonoBehaviour
         rb.linearVelocity = direction;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "Platform") Destroy(collision.gameObject);
-        if (collision.gameObject.name == "wall_1__00_1") Destroy(collision.gameObject);
-    }
+
 }

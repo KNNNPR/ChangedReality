@@ -1580,6 +1580,7 @@ MonoBehaviour:
   interactionPrompt: {fileID: 0}
   openDoorSprite: {fileID: -5674441545273914294, guid: 68bd52d168c7d8a41b42ff372046e1d1, type: 3}
   closedDoorSprite: {fileID: -3494156700775830923, guid: 264ff9540491d964e8fd7688da69b8aa, type: 3}
+  SceneNumber: 3
 --- !u!212 &286633727
 SpriteRenderer:
   m_ObjectHideFlags: 0
