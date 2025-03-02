@@ -67,11 +67,12 @@ public class PlayerMovementLogic : MonoBehaviour
 
         if (jumpBufferTimeCounter > 0f && coyoteTimeCounter > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? -jumpPower : jumpPower);
+            if (isDoppel) rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? jumpPower : -jumpPower);
+            else rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? -jumpPower : jumpPower);
             jumpBufferTimeCounter = 0f;
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocity.y > 0)
+        if (Input.GetKeyUp(KeyCode.Space) && Mathf.Abs(rb.linearVelocity.y) > 0)//Cheking
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
             coyoteTimeCounter = 0f;
