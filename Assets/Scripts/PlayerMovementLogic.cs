@@ -26,7 +26,18 @@ public class PlayerMovementLogic : MonoBehaviour
     private float currentSpeed = 0f;
     private bool isGravityInverted = false;
 
-    private bool gravitySphereCollected = false;
+    [SerializeField]private bool gravitySphereCollected = false;
+
+    [SerializeField] private bool isDoppel;
+
+    private void Start()
+    {
+        if (isDoppel)
+        {
+            rb.gravityScale *= -1f;
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * -1, transform.localScale.z);
+        }
+    }
 
     void Update()
     {
@@ -56,11 +67,12 @@ public class PlayerMovementLogic : MonoBehaviour
 
         if (jumpBufferTimeCounter > 0f && coyoteTimeCounter > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? -jumpPower : jumpPower);
+            if (isDoppel) rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? jumpPower : -jumpPower);
+            else rb.linearVelocity = new Vector2(rb.linearVelocity.x, isGravityInverted ? -jumpPower : jumpPower);
             jumpBufferTimeCounter = 0f;
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocity.y > 0)
+        if (Input.GetKeyUp(KeyCode.Space) && Mathf.Abs(rb.linearVelocity.y) > 0)//Cheking
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
             coyoteTimeCounter = 0f;
