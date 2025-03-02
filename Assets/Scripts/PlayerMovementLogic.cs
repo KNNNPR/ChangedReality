@@ -26,7 +26,18 @@ public class PlayerMovementLogic : MonoBehaviour
     private float currentSpeed = 0f;
     private bool isGravityInverted = false;
 
-    private bool gravitySphereCollected = false;
+    [SerializeField]private bool gravitySphereCollected = false;
+
+    [SerializeField] private bool isDoppel;
+
+    private void Start()
+    {
+        if (isDoppel)
+        {
+            rb.gravityScale *= -1f;
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * -1, transform.localScale.z);
+        }
+    }
 
     void Update()
     {
