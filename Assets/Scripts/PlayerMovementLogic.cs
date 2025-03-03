@@ -75,12 +75,14 @@ public class PlayerMovementLogic : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTime;
             animator.SetBool("isGrounded", true);
+            StopLoop(jumpSound);
             
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
             animator.SetBool("isGrounded", false);
+            PlayLoopSound(jumpSound);
             
          
         }
@@ -144,7 +146,7 @@ public class PlayerMovementLogic : MonoBehaviour
         if (clip != null && !audioSource.isPlaying)
         {
             audioSource.clip = clip;
-            audioSource.loop = true;
+            audioSource.loop = false;
             audioSource.Stop();
         }
     }
