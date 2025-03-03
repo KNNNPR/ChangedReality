@@ -67,9 +67,7 @@ public class PlayerMovementLogic : MonoBehaviour
         else if (horizontal == 0 || !IsGrounded())
         {
             isWalking = false;
-            StopLoop(walkSound);
-
-            //audioSource.Stop(); // ������������� ���� �����
+            audioSource.Stop(); // ������������� ���� �����
         }
         animator.SetFloat("speed", Mathf.Abs(horizontal));
 
