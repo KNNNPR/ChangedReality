@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovementLogic : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource; // Источник звука
+    [SerializeField] private AudioSource audioSource; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     private float horizontal;
-    [SerializeField] private AudioClip walkSound; // Звук шагов
-    [SerializeField] private AudioClip jumpSound; // Звук прыжка
-    [SerializeField] private GameObject pauseMenuUI; // Ссылка на панель паузы
+    [SerializeField] private AudioClip walkSound; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    [SerializeField] private AudioClip jumpSound; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    [SerializeField] private GameObject pauseMenuUI; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     private bool isPaused = false;
     [SerializeField] private float speed = 8f;
     [SerializeField] private float acceleration = 10f;
@@ -46,7 +46,7 @@ public class PlayerMovementLogic : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) // Нажатие Esc
+        if (Input.GetKeyDown(KeyCode.Escape)) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Esc
         {
             if (isPaused)
             {
@@ -62,12 +62,14 @@ public class PlayerMovementLogic : MonoBehaviour
         if (horizontal != 0 && IsGrounded() && !isWalking)
         {
             isWalking = true;
-            PlayLoopSound(walkSound); // Запускаем звук шагов
+            PlayLoopSound(walkSound); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         }
         else if (horizontal == 0 || !IsGrounded())
         {
             isWalking = false;
-            //audioSource.Stop(); // Останавливаем звук шагов
+            StopLoop(walkSound);
+
+            //audioSource.Stop(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         }
         animator.SetFloat("speed", Mathf.Abs(horizontal));
 
@@ -139,23 +141,32 @@ public class PlayerMovementLogic : MonoBehaviour
             audioSource.Play();
         }
     }
+    private void StopLoop(AudioClip clip)
+    {
+        if (clip != null && !audioSource.isPlaying)
+        {
+            audioSource.clip = clip;
+            audioSource.loop = true;
+            audioSource.Stop();
+        }
+    }
     public void PauseGame()
     {
-        pauseMenuUI.SetActive(true); // Показываем меню
-        Time.timeScale = 0f; // Останавливаем игру
+        pauseMenuUI.SetActive(true); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+        Time.timeScale = 0f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         isPaused = true;
     }
 
     public void ResumeGame()
     {
-        pauseMenuUI.SetActive(false); // Скрываем меню
-        Time.timeScale = 1f; // Возобновляем игру
+        pauseMenuUI.SetActive(false); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+        Time.timeScale = 1f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         isPaused = false;
     }
     public void LoadMainMenu()
     {
-        Time.timeScale = 1f; // Восстанавливаем время перед выходом
-        SceneManager.LoadScene("MainMenu"); // Загрузка главного меню
+        Time.timeScale = 1f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        SceneManager.LoadScene("MainMenu"); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     }
     private void FixedUpdate()
     {
